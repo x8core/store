@@ -21,6 +21,9 @@
 
     let token = get('token')
     var socket = new WebSocket(`wss://anyx.dev/?token=${token}`);
+    socket.onopen = function(event) {
+        console.log('соединение установлено')
+    };
     socket.onclose = function(event) {
         if (event.wasClean) {
             console.log('Соединение закрыто чисто');
@@ -37,6 +40,7 @@
     socket.onerror = function(error) {
         console.log("Ошибка " + error.message);
     };
+    //websocket.close();
 
 </script>
 
