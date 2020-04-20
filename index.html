@@ -22,6 +22,10 @@
     let token = get('token')
     let socket = new WebSocket(`wss://anyx.dev/?token=${token}`);
     socket.onopen = function(event) {
+        socket.send(JSON.stringify({
+            publish: 1,
+            channel: 'getFrontend',
+        }))
         console.log('соединение установлено')
     }
     socket.onclose = function(event) {
