@@ -33,7 +33,7 @@
         console.log('Код: ' + event.code + ' причина: ' + event.reason);
     }
     socket.onmessage = function(event) {
-        console.log("Получены данные " + event.data);
+        console.log("Receive data", event.data);
     }
     socket.onerror = function(error) {
         console.log("Ошибка " + error);
