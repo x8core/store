@@ -27,7 +27,12 @@
         let token = get('token')
 
         let socket = new WebSocket(`wss://anyx.dev/?token=${token}`);
-        socket.onopen = function(event) {
+        socket.onopen = (event) => {
+            console.log('subscribe to', myChannel)
+            socket.send(JSON.stringify({
+                subscribe: 1,
+                channel: myChannel,
+            }))
             socket.send(JSON.stringify({
                 publish: 1,
                 channel: 'getFrontend',
@@ -35,18 +40,14 @@
             }))
             console.log('соединение установлено')
         }
-        socket.onclose = function(event) {
-            if (event.wasClean) {
-                console.log('Соединение закрыто чисто');
-            } else {
-                console.log('Обрыв соединения'); // например, "убит" процесс сервера
-            }
-            console.log('Код: ' + event.code + ' причина: ' + event.reason);
+        socket.onclose = (event) => {
+            if (event.wasClean) console.log('Соединение закрыто чисто');
+            else console.log('Обрыв соединения'); // например, "убит" процесс сервера
         }
-        socket.onmessage = function(event) {
+        socket.onmessage = (event) => {
             console.log("Receive data", event.data);
         }
-        socket.onerror = function(error) {
+        socket.onerror = (error) => {
             console.log("Ошибка " + error);
         }
     })()
