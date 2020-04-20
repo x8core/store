@@ -7,42 +7,49 @@
 <body>
 
 <script>
-
-    let get = (name) => {
-        let nameEQ = name + '=';
-        let ca = document.cookie.split(';');
-        for (let i = 0; i < ca.length; i++) {
-            let c = ca[i];
-            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    (() => {
+        let get = (name) => {
+            let nameEQ = name + '=';
+            let ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
         }
-        return null;
-    }
-
-    let token = get('token')
-    let socket = new WebSocket(`wss://anyx.dev/?token=${token}`);
-    socket.onopen = function(event) {
-        socket.send(JSON.stringify({
-            publish: 1,
-            channel: 'getFrontend',
-        }))
-        console.log('соединение установлено')
-    }
-    socket.onclose = function(event) {
-        if (event.wasClean) {
-            console.log('Соединение закрыто чисто');
-        } else {
-            console.log('Обрыв соединения'); // например, "убит" процесс сервера
+        let uuid = () => {
+            function s4() { return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1) }
+            return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4()
         }
-        console.log('Код: ' + event.code + ' причина: ' + event.reason);
-    }
-    socket.onmessage = function(event) {
-        console.log("Receive data", event.data);
-    }
-    socket.onerror = function(error) {
-        console.log("Ошибка " + error);
-    }
 
+        let myChannel = 'frontend:' + uuid();
+        let token = get('token')
+
+        let socket = new WebSocket(`wss://anyx.dev/?token=${token}`);
+        socket.onopen = function(event) {
+            socket.send(JSON.stringify({
+                publish: 1,
+                channel: 'getFrontend',
+                responseToChannel: myChannel
+            }))
+            console.log('соединение установлено')
+        }
+        socket.onclose = function(event) {
+            if (event.wasClean) {
+                console.log('Соединение закрыто чисто');
+            } else {
+                console.log('Обрыв соединения'); // например, "убит" процесс сервера
+            }
+            console.log('Код: ' + event.code + ' причина: ' + event.reason);
+        }
+        socket.onmessage = function(event) {
+            console.log("Receive data", event.data);
+        }
+        socket.onerror = function(error) {
+            console.log("Ошибка " + error);
+        }
+    })()
 </script>
 
 </body>
