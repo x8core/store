@@ -45,7 +45,9 @@
             else console.log('Обрыв соединения'); // например, "убит" процесс сервера
         }
         socket.onmessage = (event) => {
-            console.log("Receive data", event.data);
+            console.log("Receive data");
+            let msg = JSON.parse(event.data);
+            console.log(msg);
         }
         socket.onerror = (error) => {
             console.log("Ошибка " + error);
