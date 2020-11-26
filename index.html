@@ -24,12 +24,12 @@
 
         (async() => {
             let list = (await fetch('/list.json')).json()
-            console.log(list)
+            for (let i = 0; i < list.length; i++) {
+                let dom = document.createElement('a')
+                dom.setAttribute('href', list[i])
+                document.body.appendChild(dom)
+            }
         })()
-
-        //let dom = document.createElement('a')
-        //dom.setAttribute('href', )
-        //document.body.appendChild(dom)
 </script>
 </body>
 </html>
