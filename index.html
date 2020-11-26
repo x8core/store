@@ -23,7 +23,10 @@
         }
 
         (async() => {
-            let list = (await fetch('/list.json')).json()
+            let list = (await fetch('https://x8core.github.com/list.json')).json()
+
+            console.log(list)
+
             for (let i = 0; i < list.length; i++) {
                 let dom = document.createElement('a')
                 dom.setAttribute('href', list[i])
