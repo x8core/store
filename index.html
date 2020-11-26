@@ -23,9 +23,8 @@
         }
 
         (async() => {
-            let list = (await fetch('list.json')).json()
-
-            console.log(list)
+            let list = (await fetch('list.json'))
+            list = await list.json()
 
             for (let i = 0; i < list.length; i++) {
                 let dom = document.createElement('a')
