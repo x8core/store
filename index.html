@@ -22,7 +22,14 @@
             return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4()
         }
 
+        (async() => {
+            let list = await fetch('/list.json')
+            console.log(list)
+        })()
 
+        //let dom = document.createElement('a')
+        //dom.setAttribute('href', )
+        //document.body.appendChild(dom)
 </script>
 </body>
 </html>
