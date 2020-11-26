@@ -23,7 +23,7 @@
         }
 
         (async() => {
-            let list = await fetch('/list.json')
+            let list = (await fetch('/list.json')).json()
             console.log(list)
         })()
 
