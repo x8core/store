@@ -1,13 +1,12 @@
-<!doctype html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title></title>
+<head><meta charset="UTF-8">
 </head>
 <body>
 
 <script>
-    (() => {
+        let u = {}
+        u.f = {}
+
         let get = (name) => {
             let nameEQ = name + '=';
             let ca = document.cookie.split(';');
@@ -23,37 +22,7 @@
             return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4()
         }
 
-        let myChannel = 'frontend:' + uuid();
-        let token = get('token')
 
-        let socket = new WebSocket(`wss://anyx.dev/?token=${token}`);
-        socket.onopen = (event) => {
-            console.log('subscribe to', myChannel)
-            socket.send(JSON.stringify({
-                subscribe: 1,
-                channel: myChannel,
-            }))
-            socket.send(JSON.stringify({
-                publish: 1,
-                channel: 'getFrontend',
-                responseToChannel: myChannel
-            }))
-            console.log('соединение установлено')
-        }
-        socket.onclose = (event) => {
-            if (event.wasClean) console.log('Соединение закрыто чисто');
-            else console.log('Обрыв соединения'); // например, "убит" процесс сервера
-        }
-        socket.onmessage = (event) => {
-            console.log("Receive data");
-            let msg = JSON.parse(event.data);
-            console.log(msg);
-        }
-        socket.onerror = (error) => {
-            console.log("Ошибка " + error);
-        }
-    })()
 </script>
-
 </body>
 </html>
