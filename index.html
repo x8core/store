@@ -3,7 +3,8 @@
 </head>
 <body>
 
-<audio controls id="player"></audio>
+<audio style="width: 100%; position: fixed;" controls id="player"></audio>
+<br><br><br>
 
 <script>
         let u = {}
@@ -32,9 +33,17 @@
             for (let i = 0; i < list.length; i++) {
                 let dom = document.createElement('a')
                 dom.setAttribute('href', list[i])
+                dom.style.display = 'block'; dom.style.color = 'black'
                 dom.innerText = list[i]
-                //document.body.appendChild(dom)
-                //document.body.appendChild(document.createElement('br'))
+                document.body.appendChild(dom)
+                dom.addEventListener('click', (e) => {
+                    e.preventDefault()
+                    p.src = dom.getAttribute('href');
+                    p.load()
+                    p.addEventListener('canplaythrough', () => {
+                        p.play()
+                    })
+                })
             }
         })()
 </script>
