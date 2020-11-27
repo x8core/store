@@ -1,51 +1,55 @@
-<html>
-<head><meta charset="UTF-8">
-</head>
-<body>
+<html><head><meta charset="UTF-8"></head>
+<body style="margin: 0">
 
-<audio style="width: 100%; position: fixed;" controls id="player"></audio>
-<br><br><br>
+<div style="position: fixed; width: 100%; background: #E9E8E8;">
+    <audio controls id="player" style="display:block; width: 100%; outline: none;"></audio>
+    <div id="info" style="padding-bottom: 5px"></div>
+</div>
+<br><br><br><br><br>
 
 <script>
-        let u = {}
-        u.f = {}
-        let p = document.getElementById('player')
+    let u = {}
+    u.f = {}
+    let p = document.getElementById('player')
+    p.volume = 0.4
+    let info = document.getElementById('info')
 
-        let get = (name) => {
-            let nameEQ = name + '=';
-            let ca = document.cookie.split(';');
-            for (let i = 0; i < ca.length; i++) {
-                let c = ca[i];
-                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-            }
-            return null;
+    let get = (name) => {
+        let nameEQ = name + '=';
+        let ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
         }
-        let uuid = () => {
-            function s4() { return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1) }
-            return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4()
-        }
+        return null;
+    }
+    let uuid = () => {
+        function s4() { return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1) }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4()
+    }
 
-        (async() => {
-            let list = (await fetch('list.json'))
-            list = await list.json()
+    (async() => {
+        let list = await fetch('list.json')
+        list = await list.json()
 
-            for (let i = 0; i < list.length; i++) {
-                let dom = document.createElement('a')
-                dom.setAttribute('href', list[i])
-                dom.style.display = 'block'; dom.style.color = 'black'
-                dom.innerText = list[i]
-                document.body.appendChild(dom)
-                dom.addEventListener('click', (e) => {
-                    e.preventDefault()
-                    p.src = dom.getAttribute('href');
-                    p.load()
-                    p.addEventListener('canplaythrough', () => {
-                        p.play()
-                    })
+        for (let i = 0; i < list.length; i++) {
+            let dom = document.createElement('a')
+            dom.setAttribute('href', list[i])
+            dom.style.display = 'block'; dom.style.color = 'black'
+            dom.innerText = list[i]
+            dom.addEventListener('click', (e) => {
+                e.preventDefault()
+                p.src = dom.getAttribute('href'); info.innerText = dom.getAttribute('href')
+                p.load()
+                p.addEventListener('canplaythrough', () => {
+                    p.play()
                 })
-            }
-        })()
+            })
+
+            document.body.appendChild(dom)
+        }
+    })()
 </script>
 </body>
 </html>
