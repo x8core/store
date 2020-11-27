@@ -31,6 +31,13 @@ walk('audio',(err, results) => {
         let t = results[i]
         list.push('https://' + t.substr(t.indexOf('x8core.github.io/audio')))
     }
+
+    list = list.sort()
+
+    /*for (let i = 0; i < list.length; i++) {
+        let t = list[i]
+        console.log(t)
+    }*/
     fs.writeFileSync('list.json', JSON.stringify(list))
 })
 
