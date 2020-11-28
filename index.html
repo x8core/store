@@ -58,7 +58,7 @@
             dom.addEventListener('click', (e) => {
                 e.preventDefault()
                 playTrack(dom)
-                p.on('ended', (e) => playTrack(dom.nextElementSibling))
+                p.on('ended', (e) => playTrack(playingTrack.nextElementSibling))
             })
 
             document.body.appendChild(dom)
