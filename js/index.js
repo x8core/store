@@ -5,18 +5,14 @@ let p = new Plyr('#player', {}); p.volume = 0.4
 let playingTrack
 let trackInfo = document.getElementById('trackInfo')
 
-let processScroll = () => {
+/*let processScroll = () => {
 
-  if (localStorage.getItem('scroll')) {
-    window.scrollTo(0, window.pageYOffset)
-  }
-
+  if (localStorage.getItem('scroll')) window.scrollTo(0, window.pageYOffset)
   window.onscroll = (e) => {
-    if (window.pageYOffset) {
-      localStorage.setItem('scroll', window.pageYOffset)
-    }
+    if (window.pageYOffset) localStorage.setItem('scroll', window.pageYOffset)
   }
-}
+}*/
+
 let get = (name) => {
   let nameEQ = name + '=';
   let ca = document.cookie.split(';');
@@ -63,5 +59,5 @@ let playTrack = (dom) => {
     document.body.appendChild(dom)
   }
 
-  processScroll()
+  //setTimeout(processScroll,1200)
 })()
