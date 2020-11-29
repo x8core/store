@@ -45,10 +45,23 @@ let playTrack = (dom) => {
   list = await list.json()
   console.log('tracks count: ', list.length)
 
+  let curLetter = ''
+
   for (let i = 0; i < list.length; i++) {
+
+    let title = list[i].slice(31, -4)
+
+    let letter = title.substr(0, 1)
+    if (letter !== curLetter) {
+      curLetter = letter
+      let div = document.createElement('h2')
+      div.innerText = letter
+      document.body.appendChild(div)
+    }
+
     let dom = document.createElement('a')
     dom.setAttribute('href', list[i])
-    dom.innerText = list[i].slice(31, -4)
+    dom.innerText = title
     dom.classList.add('track')
     dom.addEventListener('click', (e) => {
       e.preventDefault()
