@@ -1,14 +1,22 @@
 let u = {}
 u.f = {}
 
-let p = new Plyr('#player', {});
-//let p = document.getElementById('player')
-p.volume = 0.4
-
+let p = new Plyr('#player', {}); p.volume = 0.4
 let playingTrack
+let trackInfo = document.getElementById('trackInfo')
 
-let info = document.getElementById('info')
+let processScroll = () => {
 
+  if (localStorage.getItem('scroll')) {
+    window.scrollTo(0, window.pageYOffset)
+  }
+
+  window.onscroll = (e) => {
+    if (window.pageYOffset) {
+      localStorage.setItem('scroll', window.pageYOffset)
+    }
+  }
+}
 let get = (name) => {
   let nameEQ = name + '=';
   let ca = document.cookie.split(';');
@@ -24,26 +32,28 @@ let uuid = () => {
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4()
 }
 
-let playTrack = (dom) => {
-  if (playingTrack) playingTrack.style.background = null
-  playingTrack = dom
-  playingTrack.style.background = '#00b3ff'
 
-  info.innerText = playingTrack.innerText
-  p.source = {type: 'audio', sources: [{src: dom.innerText}] };
+let playTrack = (dom) => {
+  if (playingTrack) playingTrack.classList.remove('active')
+  playingTrack = dom
+  playingTrack.classList.add('active')
+
+  trackInfo.innerText = playingTrack.innerText
+  p.source = {type: 'audio', sources: [{src: dom.getAttribute('href')}] };
   p.play()
 }
 
 (async() => {
-  let list = await fetch('list.json')
+
+  let list = await fetch('list.json?v=3')
   list = await list.json()
-  console.log(list.length)
+  console.log('tracks count: ', list.length)
 
   for (let i = 0; i < list.length; i++) {
     let dom = document.createElement('a')
     dom.setAttribute('href', list[i])
-    dom.style.display = 'block'; dom.style.color = 'black'
-    dom.innerText = list[i]
+    dom.innerText = list[i].slice(31, -4)
+    dom.classList.add('track')
     dom.addEventListener('click', (e) => {
       e.preventDefault()
       playTrack(dom)
@@ -52,4 +62,6 @@ let playTrack = (dom) => {
 
     document.body.appendChild(dom)
   }
+
+  processScroll()
 })()
